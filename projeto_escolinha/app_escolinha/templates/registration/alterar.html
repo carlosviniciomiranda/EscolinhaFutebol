@@ -1,0 +1,53 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Cadastro de Usuarios</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+    {% if msg %}
+    <div class="alert {{class}}">
+        {{msg}}
+    </div>
+    {% endif %}
+
+    <form method="post" action="{% url 'executarCadastroUsuario' %}">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexUsuario' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-8">
+                <label class="form-label" for="name">Nome</label>
+                <input id="user_id" name="user_id" type="text" value="{{ usuario.user }}"> 
+                <input name="name" id="name" value="{{ usuario.user }}" required autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label" for="user">Login</label>
+                <input name="user" value="{{ usuario.user }}" required id="user" type="text" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-4">
+                <label class="form-label" for="email">Email</label>
+                <input name="email" id="email" value="{{ usuario.email }}" required autofocus type="email" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="password">Password</label>
+                <input name="password" required id="password" value="{{ usuario.password }}" type="password" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="password-conf">Confirme Password</label>
+                <input name="password-conf" required id="password-conf" value="{{ usuario.password-conf }}" type="password" class="form-control" />
+            </div>
+
+        </div>
+        {% for k, v in form.errors.items %}
+        {{ v }}
+        {% endfor %}
+    </form>
+
+{% endblock %}

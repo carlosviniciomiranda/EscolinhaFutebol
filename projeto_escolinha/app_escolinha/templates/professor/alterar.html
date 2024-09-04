@@ -1,0 +1,153 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Alteração de Professores</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    {% if data.msg %}
+    <div class="alert {{data.class}}">
+        {{data.msg}}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'alteracaoDeProfessor' %}" method="post">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexProfessor' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-3">
+                <input type="hidden" name="prof_id" id="prof_id" value="{{ professor.prof_id }}"/>
+                <label class="form-label" for="prof_nome">Nome</label>
+                <input name="prof_nome" id="prof_nome" value="{{ professor.prof_nome }}" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="prof_nascimento">Nascimento</label>
+                <input name="prof_nascimento" id="prof_nascimento" value="{{ professor.prof_nascimento|date:'Y-m-d' }}" type="date" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="prof_email">Email</label>
+                <input name="prof_email" id="prof_email" value="{{ professor.prof_email }}" type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="prof_telefone">Telefone</label>
+                <input name="prof_telefone" id="prof_telefone" value="{{ professor.prof_telefone }}" type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="prof_status_id">Status</label>
+                <select name="prof_status_id" class="form-select">
+                    {% for status in statuss %}
+                        {% if status.status_id == professor.prof_status_id %}
+                            <option selected value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% else %}
+                            <option value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-2">
+                <label class="form-label" for="prof_cep">Cep</label>
+                <input name="prof_cep" id="prof_cep" value="{{ professor.prof_cep }}" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="prof_endereco">Endereço</label>
+                <input name="prof_endereco" id="prof_endereco" value="{{ professor.prof_endereco }}" type="text" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="prof_bairro">Bairro</label>
+                <input name="prof_bairro" id="prof_bairro" value="{{ professor.prof_bairro }}" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="prof_cidade">Cidade</label>
+                <input name="prof_cidade" id="prof_cidade" value="{{ professor.prof_cidade }}" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="prof_estado">Estado</label>
+                <input name="prof_estado" id="prof_estado" value="{{ professor.prof_estado }}" type="text" class="form-control" />
+            </div>
+
+        </div>
+
+    </form>
+
+    <br>
+    
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              <span class="btn btn-primary btn-sm"><strong>Visualizar/Gerenciar Turmas</strong></span>
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+
+            <form action="{% url 'inserirProfessorTurma' %}" method="post">
+                {% csrf_token %}
+
+                <div class="row g-3 mt-2">
+
+                        <div class="col-md-2">
+                            <label class="form-label" for="turma_id">Turmas</label>
+                            <input type="hidden" name="prof_id" value="{{ professor.prof_id }}">
+                            <select name="turma_id" class="form-select">
+                                {% for turma in turmas %}
+                                        <option selected value="{{ turma.turma_id }}">{{ turma.turma_descricao }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <input type="submit" value="Inserir Turma" class="btn btn-success btn-block mt-4 mb-0">
+                        </div>
+
+                </div>
+
+            </form>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <td colspan="3">Turma</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for professorturma in professorturmas %}
+                    <tr>
+                        <th scope="row">{{professorturma.prof_turma_id}}</th>
+                        <td>{{professorturma.prof_turma_turma.turma_descricao}}</td>
+                        <td>
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <form action="{% url 'deletarProfessorTurma' %}" method="POST" class="ms-2">
+                            {% csrf_token %}
+                            <!-- Submit button -->
+                            <input type="hidden" name="prof_id" value="{{professorturma.prof_turma_professor.prof_id}}">
+                            <input type="hidden" name="prof_turma_id" value="{{professorturma.prof_turma_id}}">
+                                <button type="submit" id="btnIr" class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                            
+                        </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+
+    <br>
+
+
+
+{% endblock %}

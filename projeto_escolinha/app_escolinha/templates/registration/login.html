@@ -1,0 +1,72 @@
+{% load static %}
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Fonts -->
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
+
+  <link rel="stylesheet" href="{% static 'login/style.css' %}">
+
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+
+  <title>Escolinha tela de login</title>
+</head>
+<body>
+    <!-- As a heading -->
+    <nav class="navbar navbar-dark bg-primary">
+        <div class="container-fluid">
+          <span class="navbar-brand mb-0 h1">Escolinha</span>
+        </div>
+    </nav>
+    <p></p>
+
+<div class="container">
+  <main class="login-form">
+    <div class="cotainer">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card">
+            <img src="{% static 'imagens/JogadorFutebolSilhueta.png' %}" height="200" class="card-img-top" alt="...">
+            <div class="card-body">
+
+              <form method="post">
+                {% csrf_token %}
+
+                <div class="form-group row">
+                  <label for="email_address" class="col-md-4 col-form-label text-md-right">Usuario</label>
+                  <div class="col-md-6">
+                    <input type="text" id="email_address" class="form-control" name="username" required autofocus>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="password" class="col-md-4 col-form-label text-md-right">Senha</label>
+                  <div class="col-md-6">
+                    <input type="password" value="102938" id="password" class="form-control" name="password" required>
+                  </div>
+                </div>
+
+                <div class="col-md-6 offset-md-4">
+                  <button type="submit" class="btn btn-primary">
+                    Login
+                  </button>
+                </div>
+                {% for k, v in form.errors.items %}
+                  {{ v }}
+                {% endfor %}
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+</body>
+</html>

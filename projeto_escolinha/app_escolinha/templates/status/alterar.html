@@ -1,0 +1,29 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Alteração de Status</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    {% if data.msg %}
+    <div class="alert {{data.class}}">
+        {{data.msg}}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'alteracaoDeStatus' %}" method="post">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexStatus' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-10">
+                <input type="hidden" value="{{ status.status_id }}" name="status_id" id="status_id">
+                <label class="form-label" for="status_descricao">Descrição</label>
+                <input name="status_descricao" id="status_descricao" value="{{ status.status_descricao }}" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+        </div>
+    </form>
+
+{% endblock %}

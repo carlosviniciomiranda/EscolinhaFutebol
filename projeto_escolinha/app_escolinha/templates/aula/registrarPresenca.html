@@ -1,0 +1,118 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+    <a class="btn btn-primary btn-block mb-4 mt-4" href="{% url 'indexAula' %}">Voltar</a>
+    <br><h5><b>Data:&nbsp;</b>{{ aula.aula_data|date:'d/m/Y' }}</h5><h5><b>Turma:&nbsp;</b>{{ aula.aula_turma.turma_descricao }} <b>Aula:&nbsp;</b>{{ aula.aula_descricao }}</h5><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    {% if data.msg %}
+    <div class="alert {{data.class}}">
+        {{data.msg}}
+    </div>
+    {% endif %}
+
+    <div class="accordion accordion-flush" id="accordionProfessores">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-professores">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseProfessoresOne" aria-expanded="false" aria-controls="flush-collapseProfessoresOne">
+              <span class="btn btn-primary btn-sm"><strong>Visualizar Professores da turma</strong></span>
+            </button>
+          </h2>
+          <div id="flush-collapseProfessoresOne" class="accordion-collapse collapse" aria-labelledby="flush-professores" data-bs-parent="#accordionProfessores">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th colspan="2" scope="col">Professor</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for professorturma in professorturmas %}
+                    <tr>
+                        <th scope="row">{{professorturma.prof_turma_professor.prof_id}}</th>
+                        <td>{{professorturma.prof_turma_professor.prof_nome}}</td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+
+          </div>
+        </div>
+    </div>
+
+    <br>
+
+    <form action="{% url 'inserirPresencaAula' %}" method="post">
+        {% csrf_token %}
+        <div class="row g-3 mb-2">
+            <div class="col-md-5">
+                <input type="hidden" name="aula_id" value="{{ aula.aula_id }}">
+                <label class="form-label" for="aluno_id"></label>
+                <select name="aluno_id" class="form-select">
+                    <option selected value="">Selecione o aluno</option>
+                    {% for aluno in alunosDaTurma %}
+                            <option value="{{ aluno.aluno_id }}">{{ aluno.aluno_nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="row g-3 mb-2">
+            <div class="col-md-5">
+                <input type="submit" value="Confirmar Presença" class="btn btn-success btn-block mb-4">
+            </div>
+        </div>
+    </form>
+
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-headingOne">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+              <span class="btn btn-primary btn-sm"><strong>Visualizar alunos presentes</strong></span>
+            </button>
+          </h2>
+          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th scope="col">#</th>
+                    <th colspan="3" scope="col">Aluno</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for presenca in presencasDaAula %}
+                    <tr>
+                        <th scope="row">{{presenca.pres_id}}</th>
+                        <td colspan="3">{{presenca.pres_aluno.aluno_nome}}</td>
+                        <td>
+
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <form action="{% url 'deletarPresencaAula' %}" method="POST" class="ms-2">
+                                {% csrf_token %}
+                                <!-- Submit button -->
+                                    <input type="hidden" name="pres_id" value="{{presenca.pres_id}}">
+                                    <button type="submit" id="btnIr" class="btn btn-danger btn-sm">Excluir</button>
+                                </form>
+                            </div>
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+
+
+          </div>
+        </div>
+      </div>
+
+
+{% endblock %}

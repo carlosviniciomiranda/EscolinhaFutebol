@@ -1,0 +1,59 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Status</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+  {% if data.msg %}
+  <div class="alert {{data.class}}">
+      {{data.msg}}
+  </div>
+  {% endif %}
+
+  <form action="{% url 'telaInserirStatus' %}" method="POST" class="ms-2">
+    {% csrf_token %}
+    <!-- Submit button -->
+    <input type="submit" value="Inserir" class="btn btn-primary btn-sm">
+  </form>
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th colspan="3" scope="col">Descrição</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for status in statuss %}
+          <tr>
+              <th scope="row">{{status.status_id}}</th>
+              <td colspan="3">{{status.status_descricao}}</td>
+              <td>
+
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <form action="{% url 'selecionarStatus' %}" method="POST" class="ms-2">
+                      {% csrf_token %}
+                      <!-- Submit button -->
+                        <input type="hidden" name="status_id" value="{{status.status_id}}">
+                        <button type="submit" id="btnIr" class="btn btn-primary btn-sm">Alterar</button>
+                    </form>
+                    <form action="{% url 'deletarStatus' %}" method="POST" class="ms-2">
+                      {% csrf_token %}
+                      <!-- Submit button -->
+                        <input type="hidden" name="status_id" value="{{status.status_id}}">
+                        <button type="submit" id="btnIr" class="btn btn-danger btn-sm">Excluir</button>
+                    </form>
+                </div>
+
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+  </table>
+
+{% endblock %}
+
+

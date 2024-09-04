@@ -1,0 +1,67 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Aulas</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+  {% if data.msg %}
+  <div class="alert {{data.class}}">
+      {{data.msg}}
+  </div>
+  {% endif %}
+
+  <form action="{% url 'telaInserirAula' %}" method="POST" class="ms-2">
+    {% csrf_token %}
+    <!-- Submit button -->
+    <input type="submit" value="Inserir" class="btn btn-primary btn-sm">
+  </form>
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Descrição</th>
+          <th colspan="3" scope="col">Turma</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for aula in aulas %}
+          <tr>
+              <th scope="row">{{aula.aula_id}}</th>
+              <td>{{aula.aula_descricao}}</td>
+              <td colspan="3">{{aula.aula_turma.turma_descricao}}&nbsp;Anos</td>
+              <td>
+
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                    <form action="{% url 'selecionarAula' %}" method="POST" class="ms-2">
+                      {% csrf_token %}
+                      <!-- Submit button -->
+                        <input type="hidden" name="aula_id" value="{{aula.aula_id}}">
+                        <button type="submit" id="btnIr" class="btn btn-primary btn-sm">Alterar</button>
+                    </form>
+                    <form action="{% url 'registroPresenca' %}" method="POST" class="ms-2">
+                      {% csrf_token %}
+                      <!-- Submit button -->
+                        <input type="hidden" name="aula_id" value="{{aula.aula_id}}">
+                        <button type="submit" id="btnIr" class="btn btn-primary btn-sm">Registrar Presença</button>
+                    </form>
+                    <form action="{% url 'deletarAula' %}" method="POST" class="ms-2">
+                      {% csrf_token %}
+                      <!-- Submit button -->
+                        <input type="hidden" name="aula_id" value="{{aula.aula_id}}">
+                        <button type="submit" id="btnIr" class="btn btn-danger btn-sm">Excluir</button>
+                    </form>
+                </div>
+
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+  </table>
+
+{% endblock %}
+
+

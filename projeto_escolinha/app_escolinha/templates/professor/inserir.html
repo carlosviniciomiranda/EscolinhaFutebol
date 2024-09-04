@@ -1,0 +1,82 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Cadastro de Professores</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    {% if data.msg %}
+    <div class="alert {{data.class}}">
+        {{data.msg}}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'cadastroDeProfessor' %}" method="post">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexProfessor' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-3">
+                <label class="form-label" for="prof_nome">Nome</label>
+                <input name="prof_nome" id="prof_nome" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="prof_nome">Nascimento</label>
+                <input name="prof_nascimento" id="prof_nascimento" type="date" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="prof_email">Email</label>
+                <input name="prof_email" id="prof_email" type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="prof_telefone">Telefone</label>
+                <input name="prof_telefone" id="prof_telefone" type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="prof_status_id">Status</label>
+                <select name="prof_status_id" class="form-select">
+                    {% for status in statuss %}
+                        {% if status.status_id == 1 %}
+                            <option selected value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% else %}
+                            <option value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-2">
+                <label class="form-label" for="prof_cep">Cep</label>
+                <input name="prof_cep" id="prof_cep" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="prof_endereco">Endereço</label>
+                <input name="prof_endereco" id="prof_endereco" type="text" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="prof_bairro">Bairro</label>
+                <input name="prof_bairro" id="prof_bairro" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="prof_cidade">Cidade</label>
+                <input name="prof_cidade" id="prof_cidade" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="prof_estado">Estado</label>
+                <input name="prof_estado" id="prof_estado" type="text" class="form-control" />
+            </div>
+
+
+        </div>
+
+    </form>
+
+{% endblock %}

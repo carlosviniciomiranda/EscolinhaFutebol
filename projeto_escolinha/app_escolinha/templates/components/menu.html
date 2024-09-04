@@ -1,0 +1,20 @@
+<ul class="nav nav-pills">
+    <li class="nav-item"><a href="{% url 'home' %}" class="nav-link" aria-current="page">Home</a></li>
+    <li class="nav-item"><a href="{% url 'pagina1' %}" class="nav-link">Página 1</a></li>
+    <li class="nav-item"><a href="{% url 'pagina2' %}" class="nav-link">Página 2</a></li>
+    <li class="nav-item"><a href="{% url 'telaCadastroUsuario' %}" class="nav-link">Usuarios</a></li>
+    {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %} 
+
+            <a class="nav-link collapsed" href="/logout"
+                onclick="event.preventDefault(); this.closest('form').submit();">
+                <i class="bi bi-card-list"></i>
+                <span>Sair</span>
+            </a>
+
+        </form>
+    </li>
+    {% endif %}
+</ul>

@@ -1,0 +1,44 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Cadastro de Aulas</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    {% if data.msg %}
+    <div class="alert {{data.class}}">
+        {{data.msg}}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'cadastroDeAula' %}" method="post">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexAula' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-8">
+                <label class="form-label" for="aula_descricao">Descrição</label>
+                <input name="aula_descricao" id="aula_descricao" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aula_data">Data</label>
+                <input name="aula_data" id="aula_data" type="date" min="3" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aula_turma_id">Turma</label>
+                <select class="form-select" name="aula_turma_id">
+                    {% for turma in turmas %}
+                        <option value="{{ turma.turma_id }}">{{ turma.turma_descricao }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+    </form>
+
+{% endblock %}

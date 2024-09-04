@@ -1,0 +1,61 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Professores</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+  {% if data.msg %}
+  <div class="alert {{data.class}}">
+      {{data.msg}}
+  </div>
+  {% endif %}
+
+  <form action="{% url 'telaInserirProfessor' %}" method="POST" class="ms-2">
+    {% csrf_token %}
+    <!-- Submit button -->
+    <input type="submit" value="Inserir" class="btn btn-primary btn-sm">
+  </form>
+
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th>Nome</th>
+          <th colspan="2" scope="col">Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for professor in professores %}
+          <tr>
+              <th scope="row">{{professor.prof_id}}</th>
+              <td>{{professor.prof_nome}}</td>
+              <td colspan="2">{{professor.prof_email}}</td>
+              <td>
+                <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                  <form action="{% url 'selecionarProfessor' %}" method="POST" class="ms-2">
+                    {% csrf_token %}
+                    <!-- Submit button -->
+                       <input type="hidden" name="prof_id" value="{{professor.prof_id}}">
+                      <button type="submit" id="btnIr" class="btn btn-primary btn-sm">Alterar</button>
+                  </form>
+
+                  <form action="{% url 'deletarProfessor' %}" method="POST" class="ms-2">
+                    {% csrf_token %}
+                    <!-- Submit button -->
+                       <input type="hidden" name="prof_id" value="{{professor.prof_id}}">
+                      <button type="submit" id="btnIr" class="btn btn-danger btn-sm">Excluir</button>
+                  </form>
+                  
+                </div>
+              </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+
+  </table>
+
+{% endblock %}
+
+

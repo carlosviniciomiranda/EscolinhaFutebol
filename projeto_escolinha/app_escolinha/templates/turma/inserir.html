@@ -1,0 +1,49 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Cadastro de Turmas</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    {% if data.msg %}
+    <div class="alert {{data.class}}">
+        {{data.msg}}
+    </div>
+    {% endif %}
+
+    <form action="{% url 'cadastroDeTurma' %}" method="post">
+        {% csrf_token %}
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexTurma' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-8">
+                <label class="form-label" for="turma_descricao">Descrição</label>
+                <input name="turma_descricao" id="turma_descricao" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="turma_idade_limite">Idade Limite</label>
+                <input name="turma_idade_limite" id="turma_idade_limite" type="number" min="3" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="turma_status_id">Status</label>
+                <select name="turma_status_id" class="form-select">
+                    {% for status in statuss %}
+                        {% if status.status_id == 1 %}
+                            <option selected value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% else %}
+                            <option value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+
+
+    </form>
+
+{% endblock %}

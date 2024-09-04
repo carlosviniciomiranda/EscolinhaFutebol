@@ -1,0 +1,118 @@
+{% extends 'components/modeloPrincipal.html' %}
+
+{% block descricaoPagina %}
+  <br><h4>Alteração de Alunos</h4><br>
+{% endblock %}
+
+{% block conteudo %}
+
+    <form action="{% url 'alteracaoDeAluno' %}" method="post">
+        {% csrf_token %}
+        
+        <a class="btn btn-primary btn-block mb-4" href="{% url 'indexAluno' %}">Voltar</a>
+        <input type="submit" value="Confirmar" class="btn btn-success btn-block mb-4">
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-5">
+                <label class="form-label" for="aluno_nome">Nome</label>
+                <input name="aluno_id" value="{{  aluno.aluno_id  }}" id="aluno_id" autofocus type="hidden" maxlength="150" class="form-control" />
+                <input name="aluno_nome" value="{{  aluno.aluno_nome  }}" id="aluno_nome" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_nome">Nascimento</label>
+                <input name="aluno_nascimento" type="date" value="{{ aluno.aluno_nascimento|date:'Y-m-d'  }}" id="aluno_nascimento" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_status_id">Status</label>
+                <select name="aluno_status_id" class="form-select">
+                    {% for status in statuss %}
+                        {% if status.status_id == aluno.aluno_status_id %}
+                            <option selected value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% else %}
+                            <option value="{{ status.status_id }}">{{ status.status_descricao }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_turma_id">Turmas</label>
+                <select name="aluno_turma_id" class="form-select">
+                    {% for turma in turmas %}
+                        {% if turma.turma_id == aluno.aluno_turma_id %}
+                        <option selected value="{{ turma.turma_id }}">{{ turma.turma_descricao }}</option>
+                        {% else %}
+                            <option value="{{ turma.turma_id }}">{{ turma.turma_descricao }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+
+
+        </div>
+
+        <div class="row g-3 mb-2">
+
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_telefone">Telefone</label>
+                <input name="aluno_telefone" value="{{ aluno.aluno_telefone }}" id="aluno_telefone" autofocus type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label" for="aluno_email">Email</label>
+                <input name="aluno_email" id="aluno_email" value="{{ aluno.aluno_email }}" type="text" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-5">
+                <label class="form-label" for="aluno_nome_mae">Nome Mãe</label>
+                <input name="aluno_nome_mae" value="{{ aluno.aluno_nome_mae }}" id="aluno_nome_mae" type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_nascimento_mae">Nascimento Mãe</label>
+                <input name="aluno_nascimento_mae"  type="date" value="{{ aluno.aluno_nascimento_mae|date:'Y-m-d' }}" id="aluno_nascimento_mae" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-10">
+                <label class="form-label" for="aluno_nome_pai">Nome Pai</label>
+                <input name="aluno_nome_pai" value="{{ aluno.aluno_nome_pai }}" id="aluno_nome_pai" type="text" maxlength="150" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_nascimento_pai">Nascimento Pai</label>
+                <input name="aluno_nascimento_pai" value="{{ aluno.aluno_nascimento_pai|date:'Y-m-d' }}" id="aluno_nascimento_pai" type="date" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row g-3 mb-2">
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_cep">Cep</label>
+                <input name="aluno_cep" value="{{ aluno.aluno_cep }}" id="aluno_cep" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label" for="aluno_endereco">Endereço</label>
+                <input name="aluno_endereco" value="{{ aluno.aluno_endereco }}" id="aluno_endereco" type="text" maxlength="150" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_bairro">Bairro</label>
+                <input name="aluno_bairro" value="{{ aluno.aluno_bairro }}" id="aluno_bairro" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_cidade">Cidade</label>
+                <input name="aluno_cidade" value="{{ aluno.aluno_cidade }}" id="aluno_cidade" type="text" class="form-control" />
+            </div>
+
+            <div class="col-md-2">
+                <label class="form-label" for="aluno_estado">Estado</label>
+                <input name="aluno_estado" value="{{ aluno.aluno_estado }}" id="aluno_estado" type="text" class="form-control" />
+            </div>
+
+
+        </div>
+
+    </form>
+
+{% endblock %}
